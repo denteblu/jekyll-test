@@ -51,14 +51,6 @@ This API uses HTTP verbs (methods) as following:
 + `PATCH` - *Update/Modify* - used for **modify** capabilities. The PATCH request only needs to contain the changes to the resource, not the complete resource.
 + `DELETE` - *Delete* - used to **delete** a resource identified by a URI.
 
-## Localization
-
-This API uses `Accept-Language` header to identify the locale.
-
-`Accept-Language: en`
-
-This header SHOULD be present in every request. If not, API MUST use the **english** language/locale.
-
 ## Media Type
 
 Where applicable this API MUST use the JSON media-type. Requests with a message-body are using plain JSON to set or update resource states.
@@ -201,7 +193,7 @@ Exchange credentials for `access_token`. Supported types:
 + Request
     + Headers
 
-            Authentication: Bearer JWT
+            Authentication: Bearer JWT <token>
 
 + Response 200 (application/json)
     + Attributes (Server response)
@@ -464,6 +456,57 @@ Retrieves the details of an existing user.
 
 + Response 404
 
+# Group Projects
+
+## Projects [/projects]
+
+### List all projects [GET]
+
+Returns a list of votable projects. The projects are returned based on incremental expire date.
+
+|                         |     |
+|-------------------------|-----|
+| Requires authentication | Yes |
+| Has restricted scope    | No  |
+
++ Request
+    + Headers
+
+            Authorization: JWT <token>
+
++ Response 200 (application/json)
+    + Attributes (array[Project])
+
+## Project [/projects/{id}]
+
++ Parameters
+    + id: `a6vhAo3FG7t1` (string) - id of the user.
+
+### Retrieve a user [GET]
+
+Retrieves the details of an existing user.
+
+|                         |     |
+|-------------------------|-----|
+| Requires authentication | Yes |
+| Has restricted scope    | No  |
+
+**Error codes**
+
+|       |         |                               |
+|-------|---------| ----------------------------- |
+| `400` | `1000`  | Referenced resource not found |
+
++ Request
+    + Headers
+
+            Authorization: JWT <token>
+
++ Response 200 (application/json)
+    + Attributes (Project)
+
++ Response 404
+
 # Data Structures
 
 ## OAuth grant request (object)
@@ -482,7 +525,6 @@ Retrieves the details of an existing user.
 ## Server response (object)
 + status: ok (string, required)
 
-
 ## Resource (object)
 + id: `a6vhAo3FG7t1` (string, fixed) - Short non-sequential url-friendly unique id.
 + createdAt: `2016-07-01T15:11:09.553Z` (string) - ISO Date/time string. When this resource was created.
@@ -494,3 +536,19 @@ Retrieves the details of an existing user.
 + name: `John` (string, optional, nullable) - First name of the user.
 + surname: `Doe` (string, optional, nullable) - Last name of the user.
 + avatar (string, optional, nullable) - URL to user avatar.
+
+## Category (Resource)
++ title: `Astonishing Project` (string, required) - project title
+
+
+## Project (Resource)
++ title: `Astonishing Project` (string, required) - project title
++ description: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?` (string, required) - project HTML description
++ category: `web` (string, required) - category name
++ video: `https://player.vimeo.com/video/217499569?portrait=0&badge=0` (string) - the embed video URL
++ referee_rating: `86.5` (number) - referees average votes
++ user_rating: `79.5` (number) - users average result
++ total_rating: `81.5` (number) - current result
++ vote_expiration: `2016-07-01T15:11:09.553Z` (string) - ISO Date/time string. When the project vote will expire.
++ dow_award: `2016-07-01T15:11:09.553Z` (string) - ISO Date/time string. If the project has received won the DOW award, this is the award date.
++ special_award: `2016-07-01T15:11:09.553Z` (string) - ISO Date/time string. If the project has received the special award, this is the award date.
