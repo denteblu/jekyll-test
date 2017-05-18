@@ -480,11 +480,11 @@ Returns a list of votable projects. The projects are returned based on increment
 ## Project [/projects/{id}]
 
 + Parameters
-    + id: `a6vhAo3FG7t1` (string) - id of the user.
+    + id: `a6vhAo3FG7t1` (string) - id of the project.
 
-### Retrieve a user [GET]
+### Retrieve a project [GET]
 
-Retrieves the details of an existing user.
+Retrieves the details of an existing project.
 
 |                         |     |
 |-------------------------|-----|
@@ -504,6 +504,57 @@ Retrieves the details of an existing user.
 
 + Response 200 (application/json)
     + Attributes (Project)
+
++ Response 404
+
+# Group Categories
+
+## Category [/category]
+
+### Category list [GET]
+
+Returns a category list
+
+|                         |     |
+|-------------------------|-----|
+| Requires authentication | Yes |
+| Has restricted scope    | No  |
+
++ Request
+    + Headers
+
+            Authorization: JWT <token>
+
++ Response 200 (application/json)
+    + Attributes (array[Category])
+
+## Category detail [/category/{id}]
+
++ Parameters
+    + id: `a6vhAo3FG7t1` (string) - category id.
+
+### Retrieve a category [GET]
+
+Retrieves the category details and all related projects.
+
+|                         |     |
+|-------------------------|-----|
+| Requires authentication | Yes |
+| Has restricted scope    | No  |
+
+**Error codes**
+
+|       |         |                               |
+|-------|---------| ----------------------------- |
+| `400` | `1000`  | Referenced resource not found |
+
++ Request
+    + Headers
+
+            Authorization: JWT <token>
+
++ Response 200 (application/json)
+    + Attributes (Category)
 
 + Response 404
 
@@ -527,28 +578,60 @@ Retrieves the details of an existing user.
 
 ## Resource (object)
 + id: `a6vhAo3FG7t1` (string, fixed) - Short non-sequential url-friendly unique id.
-+ createdAt: `2016-07-01T15:11:09.553Z` (string) - ISO Date/time string. When this resource was created.
-+ updatedAt: `2016-07-01T15:11:09.553Z` (string) - ISO Date/time string. When this resource was last updated.
++ createdAt: `2016-07-01T15:11:09.553Z` (string) - When this resource was created.
++ updatedAt: `2016-07-01T15:11:09.553Z` (string) - When this resource was last updated.
 
 ## User (Resource)
-+ email: `john.doe@mail.com` (string, required) - Login. Unique email address of the user.
-+ facebookId: `888047057953991` (number, optional, nullable) - Facebook ID of the user if user account is linked to the Facebook account.
++ email: `john.doe@mail.com` (string, required) - Unique email address of the user.
++ username: `johndoe` (string, required) - Username
 + name: `John` (string, optional, nullable) - First name of the user.
 + surname: `Doe` (string, optional, nullable) - Last name of the user.
 + avatar (string, optional, nullable) - URL to user avatar.
++ user_level: user (string, required) - User level
+
+## Agency (User)
++ `company_name`: `Magespecialist` (string, required) - Agency business name
++ logo: `https://www.magespecialist.it/wp-content/uploads/logo_magesepcialist_header.png` (string, optional, nullable) - URL to company logo.
++ website: `https://www.magespecialist.it` (string, required) Agency website URL
++ description: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.` (string, optional, nullable) - Agency brief description
++ user_level: agency (string, required) - User level
+
+## Referee (User)
++ user_level: referee (string, required) - User level
+
+## Vote (Resource)
++ vote: 73 (number, required) Vote rating
++ date: `2016-07-01T15:11:09.553Z` (string) - Vote timestamp.
++ user (Referee)
 
 ## Category (Resource)
-+ title: `Astonishing Project` (string, required) - project title
++ title: `Web/App` (string, required) - category title
++ stub: `web` (string, required) - category stub
++ project_count: 42 (number) - project count
 
+## Tag (Resource)
++ title: `video` (string, required) - tag title
++ stub: `video` (string, required) - tag stub
++ project_count: 13 (number) - project count
+
+## Screenshot (Resource)
++ title: `Page` (string, required) - Image title
++ filename: `logo_magesepcialist_header.png` (string, required) - Image filename
++ url: `https://www.magespecialist.it/wp-content/uploads/logo_magesepcialist_header.png` (string, required) - Image URL
 
 ## Project (Resource)
 + title: `Astonishing Project` (string, required) - project title
 + description: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?` (string, required) - project HTML description
-+ category: `web` (string, required) - category name
++ agency (Agency)
++ category (Category)
++ tags (array[Tag])
++ screenshots (array[Screenshot])
 + video: `https://player.vimeo.com/video/217499569?portrait=0&badge=0` (string) - the embed video URL
-+ referee_rating: `86.5` (number) - referees average votes
-+ user_rating: `79.5` (number) - users average result
-+ total_rating: `81.5` (number) - current result
-+ vote_expiration: `2016-07-01T15:11:09.553Z` (string) - ISO Date/time string. When the project vote will expire.
-+ dow_award: `2016-07-01T15:11:09.553Z` (string) - ISO Date/time string. If the project has received won the DOW award, this is the award date.
-+ special_award: `2016-07-01T15:11:09.553Z` (string) - ISO Date/time string. If the project has received the special award, this is the award date.
++ referee_rating: `86.5` (number, optional, nullable) - referees average votes
++ user_rating: `79.5` (number, optional, nullable) - users average result
++ total_rating: `81.5` (number, optional, nullable) - current result
++ vote_expiration: `2016-07-01T15:11:09.553Z` (string) - When the project vote will expire.
++ archived_from: `2016-07-01T15:11:09.553Z` (string) - When the project has been archived.
++ dow_award: `2016-07-01T15:11:09.553Z` (string) - If the project has received won the DOW award, this is the award date.
++ special_award: `2016-07-01T15:11:09.553Z` (string) - If the project has received the special award, this is the award date.
++ vote_list (array[Vote])
