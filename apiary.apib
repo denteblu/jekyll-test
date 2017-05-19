@@ -4,11 +4,12 @@ FORMAT: 1A
 
 API collection to view and submit projects, consult archive and send votes
 
+NOTE: This document is a **work in progress**.
+
 # API use and format specification 
 
 ## Authentication
-
-+ This API uses [OAuth 2.0](https://oauth.net) for authentication,
+*DDD frontend API* uses [OAuth Authorization](https://oauth.net). First you create a new (or acquire existing) OAuth token using Basic Authentication. After you have acquired your token you can use it to access other resources within token' scope.
 + Every token MUST be refreshed before its expiration time,
 + Token MUST be provided in `Authorization` header,
 + Toke MUST be provided for each request that requires authentication
